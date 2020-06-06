@@ -20,9 +20,9 @@ namespace RyonaVibration
         {
             InitializeComponent();
         }
-        private void btnConnect_Click(object sender, EventArgs e)
+        private async void btnConnect_Click(object sender, EventArgs e)
         {
-            Connect();
+            await Connect();
         }
 
         public static StringBuilder Logs { get; set; } = new StringBuilder();
@@ -46,15 +46,15 @@ namespace RyonaVibration
             await VibratorController.TestDevice(1);
         }
 
-        private async void btnScan_Click(object sender, EventArgs e)
-        {
-            await VibratorController.ScanForDevices();
-        }
-
         private void rtbLogs_TextChanged(object sender, EventArgs e)
         {
             rtbLogs.SelectionStart = rtbLogs.Text.Length;
             rtbLogs.ScrollToCaret();
+        }
+
+        private async void btnEmergency_Click(object sender, EventArgs e)
+        {
+            await VibratorController.EmergencyStop();
         }
     }
 }

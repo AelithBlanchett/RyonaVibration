@@ -46,7 +46,7 @@ namespace RyonaVibration
 
         void HandleDeviceRemoved(object aObj, DeviceRemovedEventArgs aArgs)
         {
-            PublishLogs($"Device connected: {aArgs.Device.Name}");
+            PublishLogs($"Device disconnected: {aArgs.Device.Name}");
         }
 
         // Here's the scanning part. Pretty simple, just scan until the user hits a button. Any
@@ -59,12 +59,21 @@ namespace RyonaVibration
             while (!Client.Devices.Any())
             {
                 PublishLogs("Scanning for devices....");
-                await Task.Delay(1);
+                await Task.Delay(500);
             }
             
 
             // Stop scanning now, 'cause we don't want new devices popping up anymore.
             await Client.StopScanningAsync();
+        }
+
+        public async Task EmergencyStop()
+        {
+            PublishLogs("Stopping everything!.");
+            foreach (var device in Client.Devices)
+            {
+                await device.StopDeviceCmd();
+            }
         }
 
         // Now we define the device control menus. After we've scanned for devices, the user can
