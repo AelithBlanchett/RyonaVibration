@@ -8,7 +8,7 @@ namespace RyonaVibration
 {
     public class SpeedTime
     {
-        public SpeedTime(double speedInPercent, int timeInMs)
+        public SpeedTime(double speedInPercent, int timeInMs, bool force = false)
         {
             SpeedInPercent = speedInPercent;
             TimeInMs = timeInMs;
@@ -32,5 +32,7 @@ namespace RyonaVibration
         public double SpeedInPercent { get; set; } = 0d;
 
         public int TimeInMs { get; set; } = 0;
+
+        public bool Force { get; set; } = false;
     }
 }

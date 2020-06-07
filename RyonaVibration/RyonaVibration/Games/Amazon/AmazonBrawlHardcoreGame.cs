@@ -55,7 +55,7 @@ namespace RyonaVibration.Games
 
             player.OrgasmStarted += (s, val) =>
             {
-                vibratorController.SendVibration(new SpeedTime(1, 60000));
+                vibratorController.SendVibration(new SpeedTime(1, 5000, true));
                 vibratorController.PublishLogs($"{nameof(player.OrgasmStarted)}: {val}");
             };
 
@@ -66,19 +66,19 @@ namespace RyonaVibration.Games
 
             player.SubmissionStarted += (s, val) =>
             {
-                vibratorController.SendVibration(new SpeedTime(0.75, 60000));
+                vibratorController.SendVibration(new SpeedTime(0.75, 60000, true));
                 vibratorController.PublishLogs($"{nameof(player.SubmissionStarted)}: {val}");
             };
 
             player.SubmissionEnded += (s, val) =>
             {
-                vibratorController.SendVibration(new SpeedTime(0, 1));
+                vibratorController.SendVibration(new SpeedTime(0, 1, true));
                 vibratorController.PublishLogs($"{nameof(player.SubmissionEnded)}: {val}");
             };
 
             player.RoundEndedLoss += (s, val) =>
             {
-                vibratorController.SendVibration(new SpeedTime(1, 4000));
+                vibratorController.SendVibration(new SpeedTime(1, 10000));
                 vibratorController.PublishLogs($"{nameof(player.RoundEndedLoss)}: {val}");
             };
         }

@@ -68,10 +68,11 @@ namespace RyonaVibration.Games
             SubmissionEnded?.Invoke(this, null);
         }
 
+        //Should go DOWN to receive vibrations
         protected virtual void OnHPUpdated(int oldValue, int newValue, int maxValue)
         {
             if(oldValue == newValue) { return; }
-            if (newValue > oldValue) { LifeRefilled?.Invoke(this, null); }
+            if (newValue > oldValue) { LifeRefilled?.Invoke(this, null); return; }
             ValueUpdated?.Invoke(this, new Tuple<string, string>("OnHPUpdated", newValue.ToString()));
             var percentageHit = Math.Abs(oldValue - newValue) * 1d / maxValue;
             HPHitReceived?.Invoke(this, percentageHit);
@@ -80,21 +81,23 @@ namespace RyonaVibration.Games
             HPUpdated?.Invoke(this, percentageHP);
         }
 
+        //Should go UP to receive vibrations
         protected virtual void OnLPUpdated(int oldValue, int newValue, int maxValue)
         {
-            if (oldValue == newValue || oldValue < newValue) { return; }
+            if (oldValue == newValue || oldValue > newValue) { return; }
             ValueUpdated?.Invoke(this, new Tuple<string, string>("OnLPUpdated", newValue.ToString()));
-            var percentageHit = maxValue - Math.Abs(oldValue - newValue) * 1d / maxValue;
+            var percentageHit = Math.Abs(oldValue - newValue) * 1d / maxValue;
             LPHitReceived?.Invoke(this, percentageHit);
 
-            var percentageLP = maxValue -  (1d * newValue) / maxValue;
+            var percentageLP = (1d * newValue) / maxValue;
             LPUpdated?.Invoke(this, percentageLP);
         }
 
+        //Should go UP to receive vibrations
         protected virtual void OnHumHPUpdated(int oldValue, int newValue, int maxValue)
         {
             if (oldValue == newValue) { return; }
-            if (newValue > oldValue) { HumLifeRefilled?.Invoke(this, null); }
+            if (newValue > oldValue) { HumLifeRefilled?.Invoke(this, null); return; }
             ValueUpdated?.Invoke(this, new Tuple<string, string>("OnHumHPUpdated", newValue.ToString()));
             var percentageHit = Math.Abs(oldValue - newValue) * 1d / maxValue;
             HumiliationHPHitReceived?.Invoke(this, percentageHit);

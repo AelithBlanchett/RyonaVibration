@@ -113,7 +113,7 @@ namespace RyonaVibration
             {
                 CurrentTaskSpeed = e;
             }
-            else if(CurrentTaskSpeed.SpeedInPercent > e.SpeedInPercent && NextAvailableCommandDate > DateTime.Now)
+            else if(CurrentTaskSpeed.SpeedInPercent > e.SpeedInPercent && NextAvailableCommandDate > DateTime.Now && e.Force == false)
             {
                 PublishLogs($"SKIPPED lower vibration of {e.SpeedInPercent * 100d}% for {e.TimeInMs}ms");
                 return;
