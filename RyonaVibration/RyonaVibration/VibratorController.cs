@@ -19,7 +19,7 @@ namespace RyonaVibration
             var existingContext = SynchronizationContext.Current;
             _context = existingContext?.CreateCopy() ?? new SynchronizationContext();
         }
-        protected virtual void PublishLogs(string entry)
+        public virtual void PublishLogs(string entry)
         {
             _context.Send(ContextCallback, entry);
         }

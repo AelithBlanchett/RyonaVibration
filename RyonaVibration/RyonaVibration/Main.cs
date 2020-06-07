@@ -85,83 +85,14 @@ namespace RyonaVibration
             {
                 AmazonBrawlHardcoreGame = new AmazonBrawlHardcoreGame();
                 AmazonBrawlHardcoreGame.AttachToGame();
-
-                AmazonBrawlHardcoreGame.Player1.HPUpdated += (s, val) =>
-                {
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.HPUpdated)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.HPHitReceived += (s, val) =>
-                {
-                    VibratorController.SendVibration(new SpeedTime(val*2, 2000));
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.HPHitReceived)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.LPUpdated += (s, val) =>
-                {
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.LPUpdated)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.LPHitReceived += (s, val) =>
-                {
-                    VibratorController.SendVibration(new SpeedTime(val*2, 3000));
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.LPHitReceived)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.HumiliationHPUpdated += (s, val) =>
-                {
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.HumiliationHPUpdated)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.HumiliationHPHitReceived += (s, val) =>
-                {
-                    VibratorController.SendVibration(new SpeedTime(val, 3000));
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.HumiliationHPHitReceived)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.OrgasmStarted += (s, val) =>
-                {
-                    VibratorController.SendVibration(new SpeedTime(1, 60000));
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.OrgasmStarted)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.OrgasmEnded += (s, val) =>
-                {
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.OrgasmEnded)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.SubmissionStarted += (s, val) =>
-                {
-                    VibratorController.SendVibration(new SpeedTime(0.75, 60000));
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.SubmissionStarted)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.SubmissionEnded += (s, val) =>
-                {
-                    VibratorController.SendVibration(new SpeedTime(0, 1));
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.SubmissionEnded)}: {val}");
-                };
-
-                AmazonBrawlHardcoreGame.Player1.RoundEndedLoss += (s, val) =>
-                {
-                    VibratorController.SendVibration(new SpeedTime(1, 4000));
-                    Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.RoundEndedLoss)}: {val}");
-                };
-
-                while (AmazonBrawlHardcoreGame.Mem.theProc != null && !AmazonBrawlHardcoreGame.Mem.theProc.HasExited)
-                {
-                    var stats = AmazonBrawlHardcoreGame.ReadEventForPlayerNumber(PlayerNumber);
-                    rtbLogs.AppendText("\n--------------------\n");
-                    foreach (var prop in stats.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-                    {
-                        if(prop.GetValue(stats) != null)
-                        {
-                            //rtbLogs.AppendText("\n" + prop.Name + ": " + prop.GetValue(stats).ToString());
-                        }
-                    }  
-                    await Task.Delay(250);
-                }
+                AmazonBrawlHardcoreGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
+                await AmazonBrawlHardcoreGame.StartListening(PlayerNumber);
             }
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            btnEmergency_Click(this, null);
         }
     }
 }

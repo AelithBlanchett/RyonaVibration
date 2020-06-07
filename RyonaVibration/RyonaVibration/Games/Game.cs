@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace RyonaVibration.Games
 {
-    public abstract class Game<T> where T : PlayerStats, new()
+    public abstract class Game<T> : IDisposable where T : PlayerStats, new()
     {
         public Memory.Mem Mem { get; set; } = new Memory.Mem();
 
@@ -20,6 +20,8 @@ namespace RyonaVibration.Games
         public string ProcessName { get; set; } = "";
 
         public string GameName { get; set; } = "";
+
+        public int PollingRate { get; set; } = 100;
 
         public T Player1 { get; set; } = new T();
 
@@ -33,6 +35,23 @@ namespace RyonaVibration.Games
         {
             ProcessName = processName;
             GameName = gameName;
+        }
+
+        public async Task StartListening(int playerNumber)
+        {
+            while (Attached && Mem.theProc != null && !Mem.theProc.HasExited)
+            {
+                var stats = ReadEventForPlayerNumber(playerNumber);
+                //rtbLogs.AppendText("\n--------------------\n");
+                //foreach (var prop in stats.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                //{
+                //    if (prop.GetValue(stats) != null)
+                //    {
+                //        //rtbLogs.AppendText("\n" + prop.Name + ": " + prop.GetValue(stats).ToString());
+                //    }
+                //}
+                await Task.Delay(PollingRate);
+            }
         }
 
         public void AttachToGame()
@@ -55,14 +74,10 @@ namespace RyonaVibration.Games
             }
         }
 
-        public virtual T ReadEventForPlayerNumber(int playerNumber)
-        {
-            var startKey = $"{GameName}.P{playerNumber}.";
-            var keysToAssign = ConfigurationManager.AppSettings.AllKeys
-                             .Where(key => key.StartsWith(startKey))
-                             .Select(key => key)
-                             .ToList();
+        public abstract void AttachListenersForPlayerNumber(VibratorController vibratorController, int playerNumber);
 
+        public virtual T GetPlayerByNumber(int playerNumber)
+        {
             T player = default;
 
             switch (playerNumber)
@@ -82,6 +97,19 @@ namespace RyonaVibration.Games
                 default:
                     break;
             }
+
+            return player;
+        }
+
+        public virtual T ReadEventForPlayerNumber(int playerNumber)
+        {
+            var startKey = $"{GameName}.P{playerNumber}.";
+            var keysToAssign = ConfigurationManager.AppSettings.AllKeys
+                             .Where(key => key.StartsWith(startKey))
+                             .Select(key => key)
+                             .ToList();
+
+            T player = GetPlayerByNumber(playerNumber);
 
             foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -138,5 +166,27 @@ namespace RyonaVibration.Games
 
             return player;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; 
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
     }
 }
