@@ -82,6 +82,17 @@ namespace RyonaVibration.Games
                 vibratorController.PublishLogs($"{nameof(player.RoundEndedLoss)}: {val}");
             };
 
+            player.HumOrgasmStarted += (s, val) =>
+            {
+                vibratorController.SendVibration(new SpeedTime(1, 600000));
+                vibratorController.PublishLogs($"{nameof(player.OrgasmStarted)}: {val}");
+            };
+
+            player.HumOrgasmEnded += (s, val) =>
+            {
+                vibratorController.PublishLogs($"{nameof(player.OrgasmEnded)}: {val}");
+            };
+
             //This means the opponent got a point
             player.LifeRefilled += (s, val) =>
             {

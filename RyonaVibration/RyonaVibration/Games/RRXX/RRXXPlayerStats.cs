@@ -39,6 +39,7 @@ namespace RyonaVibration.Games
         }
 
         int countOfSameValuesForSubmission = 0;
+        private bool isHavingHumiliationOrgasm;
 
         public float SubmissionPercent
         {
@@ -91,7 +92,34 @@ namespace RyonaVibration.Games
             {
                 OnHumHPUpdated((int)humHPPercent, (int)value, MaxHumHPPercent);
 
+                if(value >= MaxHumHPPercent && !IsHavingHumiliationOrgasm)
+                {
+                    IsHavingHumiliationOrgasm = true;
+                }
+                else if (value < MaxHumHPPercent && IsHavingHumiliationOrgasm)
+                {
+                    IsHavingHumiliationOrgasm = false;
+                }
+
                 humHPPercent = value;
+            }
+        }
+
+        protected bool IsHavingHumiliationOrgasm
+        {
+            get => isHavingHumiliationOrgasm;
+            set
+            {
+                if (isHavingHumiliationOrgasm == true && value == false)
+                {
+                    OnHumOrgasmEnded();
+                }
+                else if (isHavingHumiliationOrgasm == false && value == true)
+                {
+                    OnHumOrgasmStarted();
+                }
+                
+                isHavingHumiliationOrgasm = value;
             }
         }
 

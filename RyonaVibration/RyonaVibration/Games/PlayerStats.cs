@@ -21,6 +21,10 @@ namespace RyonaVibration.Games
 
         public event EventHandler HumLifeRefilled;
 
+        public event EventHandler HumOrgasmStarted;
+
+        public event EventHandler HumOrgasmEnded;
+
         public event EventHandler RoundEndedLoss;
 
         //Percentage of total HP lost
@@ -97,6 +101,16 @@ namespace RyonaVibration.Games
 
             var percentageLP = 1d * newValue / maxValue;
             HumiliationHPUpdated?.Invoke(this, percentageLP);
+        }
+
+        protected virtual void OnHumOrgasmStarted()
+        {
+            HumOrgasmStarted?.Invoke(this, null);
+        }
+
+        protected virtual void OnHumOrgasmEnded()
+        {
+            HumOrgasmEnded?.Invoke(this, null);
         }
     }
 }
