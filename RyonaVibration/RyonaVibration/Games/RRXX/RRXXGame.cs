@@ -33,12 +33,12 @@ namespace RyonaVibration.Games
 
             player.LPUpdated += (s, val) =>
             {
+                vibratorController.SendVibration(new SpeedTime(val, 5000));
                 vibratorController.PublishLogs($"{nameof(player.LPUpdated)}: {val}");
             };
 
             player.LPHitReceived += (s, val) =>
             {
-                vibratorController.SendVibration(new SpeedTime(val * 4, 5000));
                 vibratorController.PublishLogs($"{nameof(player.LPHitReceived)}: {val}");
             };
 

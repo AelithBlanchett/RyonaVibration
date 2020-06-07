@@ -46,8 +46,8 @@ namespace RyonaVibration.Games
             get => submissionPercent;
             set
             {
-                var originalValue = (int)(1 - ((submissionPercent) * 100) / MaxSubmissionPercent);
-                var newValue = (int)(1 - ((value) * 100) / MaxSubmissionPercent);
+                var originalValue = (int)(100 - ((submissionPercent * 100f / MaxSubmissionPercent) * 100f));
+                var newValue = (int)(100 - ((value * 100f / MaxSubmissionPercent) * 100f));
                 OnLPUpdated(originalValue, newValue, MaxSubmissionPercent);
 
                 if(originalValue != newValue && IsPinned == false)
