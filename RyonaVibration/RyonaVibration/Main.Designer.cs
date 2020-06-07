@@ -31,12 +31,17 @@
             this.btnConnect = new System.Windows.Forms.Button();
             this.rtbLogs = new System.Windows.Forms.RichTextBox();
             this.btnTestVibrate = new System.Windows.Forms.Button();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.rbSC6 = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.rbAMAZON = new System.Windows.Forms.RadioButton();
+            this.rbRRXX = new System.Windows.Forms.RadioButton();
             this.btnEmergency = new System.Windows.Forms.Button();
+            this.btnReadMemory = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbRight = new System.Windows.Forms.RadioButton();
+            this.rbLeft = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnConnect
@@ -51,9 +56,10 @@
             // 
             // rtbLogs
             // 
-            this.rtbLogs.Location = new System.Drawing.Point(12, 167);
+            this.rtbLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.rtbLogs.Location = new System.Drawing.Point(12, 195);
             this.rtbLogs.Name = "rtbLogs";
-            this.rtbLogs.Size = new System.Drawing.Size(325, 96);
+            this.rtbLogs.Size = new System.Drawing.Size(325, 160);
             this.rtbLogs.TabIndex = 1;
             this.rtbLogs.Text = "";
             this.rtbLogs.TextChanged += new System.EventHandler(this.rtbLogs_TextChanged);
@@ -68,22 +74,21 @@
             this.btnTestVibrate.UseVisualStyleBackColor = true;
             this.btnTestVibrate.Click += new System.EventHandler(this.btnTestVibrate_Click);
             // 
-            // radioButton1
+            // rbSC6
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(6, 19);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(90, 17);
-            this.radioButton1.TabIndex = 3;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Soul Calibur 6";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.rbSC6.AutoSize = true;
+            this.rbSC6.Location = new System.Drawing.Point(6, 19);
+            this.rbSC6.Name = "rbSC6";
+            this.rbSC6.Size = new System.Drawing.Size(90, 17);
+            this.rbSC6.TabIndex = 3;
+            this.rbSC6.Text = "Soul Calibur 6";
+            this.rbSC6.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.radioButton3);
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Controls.Add(this.rbAMAZON);
+            this.groupBox1.Controls.Add(this.rbRRXX);
+            this.groupBox1.Controls.Add(this.rbSC6);
             this.groupBox1.Location = new System.Drawing.Point(148, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 92);
@@ -91,27 +96,27 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Game";
             // 
-            // radioButton2
+            // rbAMAZON
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(6, 42);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(111, 17);
-            this.radioButton2.TabIndex = 4;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Rumble Roses XX";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.rbAMAZON.AutoSize = true;
+            this.rbAMAZON.Checked = true;
+            this.rbAMAZON.Location = new System.Drawing.Point(6, 65);
+            this.rbAMAZON.Name = "rbAMAZON";
+            this.rbAMAZON.Size = new System.Drawing.Size(139, 17);
+            this.rbAMAZON.TabIndex = 5;
+            this.rbAMAZON.TabStop = true;
+            this.rbAMAZON.Text = "Amazon Brawl Hardcore";
+            this.rbAMAZON.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // rbRRXX
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(6, 65);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(139, 17);
-            this.radioButton3.TabIndex = 5;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Amazon Brawl Hardcore";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.rbRRXX.AutoSize = true;
+            this.rbRRXX.Location = new System.Drawing.Point(6, 42);
+            this.rbRRXX.Name = "rbRRXX";
+            this.rbRRXX.Size = new System.Drawing.Size(111, 17);
+            this.rbRRXX.TabIndex = 4;
+            this.rbRRXX.Text = "Rumble Roses XX";
+            this.rbRRXX.UseVisualStyleBackColor = true;
             // 
             // btnEmergency
             // 
@@ -124,11 +129,56 @@
             this.btnEmergency.UseVisualStyleBackColor = false;
             this.btnEmergency.Click += new System.EventHandler(this.btnEmergency_Click);
             // 
+            // btnReadMemory
+            // 
+            this.btnReadMemory.Location = new System.Drawing.Point(12, 166);
+            this.btnReadMemory.Name = "btnReadMemory";
+            this.btnReadMemory.Size = new System.Drawing.Size(130, 23);
+            this.btnReadMemory.TabIndex = 6;
+            this.btnReadMemory.Text = "Start Game";
+            this.btnReadMemory.UseVisualStyleBackColor = true;
+            this.btnReadMemory.Click += new System.EventHandler(this.btnReadMemory_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rbRight);
+            this.groupBox2.Controls.Add(this.rbLeft);
+            this.groupBox2.Location = new System.Drawing.Point(154, 119);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(200, 70);
+            this.groupBox2.TabIndex = 6;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Player Side";
+            // 
+            // rbRight
+            // 
+            this.rbRight.AutoSize = true;
+            this.rbRight.Location = new System.Drawing.Point(6, 42);
+            this.rbRight.Name = "rbRight";
+            this.rbRight.Size = new System.Drawing.Size(50, 17);
+            this.rbRight.TabIndex = 4;
+            this.rbRight.Text = "Right";
+            this.rbRight.UseVisualStyleBackColor = true;
+            // 
+            // rbLeft
+            // 
+            this.rbLeft.AutoSize = true;
+            this.rbLeft.Checked = true;
+            this.rbLeft.Location = new System.Drawing.Point(6, 19);
+            this.rbLeft.Name = "rbLeft";
+            this.rbLeft.Size = new System.Drawing.Size(43, 17);
+            this.rbLeft.TabIndex = 3;
+            this.rbLeft.TabStop = true;
+            this.rbLeft.Text = "Left";
+            this.rbLeft.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(360, 278);
+            this.ClientSize = new System.Drawing.Size(360, 360);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.btnReadMemory);
             this.Controls.Add(this.btnEmergency);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnTestVibrate);
@@ -138,6 +188,8 @@
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -147,11 +199,15 @@
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.RichTextBox rtbLogs;
         private System.Windows.Forms.Button btnTestVibrate;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton rbSC6;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton rbRRXX;
+        private System.Windows.Forms.RadioButton rbAMAZON;
         private System.Windows.Forms.Button btnEmergency;
+        private System.Windows.Forms.Button btnReadMemory;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton rbRight;
+        private System.Windows.Forms.RadioButton rbLeft;
     }
 }
 
