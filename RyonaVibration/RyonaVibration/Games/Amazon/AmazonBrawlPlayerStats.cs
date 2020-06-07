@@ -37,11 +37,11 @@ namespace RyonaVibration.Games
         public byte IsPinned { get => isPinned;
             set
             {
-                if(isPinned == 6 && value != 6)
+                if(isPinned > 0 && value == 0)
                 {
                     OnSubmissionEnded();
                 }
-                else if (isPinned != 6 && value == 6)
+                else if (isPinned == 0 && value > 0)
                 {
                     OnSubmissionStarted();
                 }

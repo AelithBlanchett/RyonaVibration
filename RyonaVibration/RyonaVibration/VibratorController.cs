@@ -76,6 +76,7 @@ namespace RyonaVibration
             }
         }
 
+
         // Now we define the device control menus. After we've scanned for devices, the user can
         // use this menu to select a device, then select an action for that device to take.
         public async Task TestDevice(int commandNumber)
@@ -192,6 +193,75 @@ namespace RyonaVibration
 
             // Scan for devices before we get to the main menu.
             await ScanForDevices();
+        }
+
+        public static Guid CurrentTaskGuid = Guid.NewGuid();
+
+        public async void SendVibration(SpeedTime e)
+        {
+            var generatedGuid = Guid.NewGuid();
+            CurrentTaskGuid = generatedGuid;
+
+            foreach (var device in Client.Devices)
+            {
+                var commandTypes = device.AllowedMessages.Keys.Intersect(new[] { typeof(VibrateCmd), typeof(RotateCmd), typeof(LinearCmd) }).ToArray();
+
+                foreach (var cmdType in commandTypes)
+                {
+                    if (cmdType == typeof(VibrateCmd))
+                    {
+                        PublishLogs($"Vibrating all motors of {device.Name} at {e.SpeedInPercent*100d}% for 1s.");
+                        try
+                        {
+                            await device.SendVibrateCmd(e.SpeedInPercent);
+                            await Task.Delay(e.TimeInMs);
+                            if(CurrentTaskGuid == generatedGuid)
+                            {
+                                await device.SendVibrateCmd(0);
+                            }
+                        }
+                        catch (ButtplugDeviceException)
+                        {
+                            PublishLogs("Device disconnected. Please try another device.");
+                        }
+                    }
+                    else if (cmdType == typeof(RotateCmd))
+                    {
+                        PublishLogs($"Rotating {device.Name} at {e.SpeedInPercent * 100d}% for 1s.");
+                        try
+                        {
+                            await device.SendRotateCmd(e.SpeedInPercent, true);
+                            await Task.Delay(e.TimeInMs);
+                            if (CurrentTaskGuid == generatedGuid)
+                            {
+                                await device.SendRotateCmd(0, true);
+                            }
+                        }
+                        catch (ButtplugDeviceException)
+                        {
+                            PublishLogs("Device disconnected. Please try another device.");
+                        }
+                    }
+                    else if (cmdType == typeof(LinearCmd))
+                    {
+                        PublishLogs($"Oscillating linear motors of {device.Name} to {e.SpeedInPercent * 100d}%");
+                        try
+                        {
+                            await device.SendLinearCmd((uint)e.TimeInMs, e.SpeedInPercent);
+                            await Task.Delay(e.TimeInMs);
+                            if (CurrentTaskGuid == generatedGuid)
+                            {
+                                await device.SendLinearCmd((uint)e.TimeInMs, 0);
+                                await Task.Delay(e.TimeInMs);
+                            }
+                        }
+                        catch (ButtplugDeviceException)
+                        {
+                            PublishLogs("Device disconnected. Please try another device.");
+                        }
+                    }
+                }
+            }
         }
     }
 }

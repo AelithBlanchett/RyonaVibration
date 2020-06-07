@@ -76,7 +76,11 @@ namespace RyonaVibration
 
         private async void btnReadMemory_Click(object sender, EventArgs e)
         {
-            
+            if(VibratorController == null)
+            {
+                MessageBox.Show("No sextoys paired yet.");
+                return;
+            }
             if (rbAMAZON.Checked)
             {
                 AmazonBrawlHardcoreGame = new AmazonBrawlHardcoreGame();
@@ -89,6 +93,7 @@ namespace RyonaVibration
 
                 AmazonBrawlHardcoreGame.Player1.HPHitReceived += (s, val) =>
                 {
+                    VibratorController.SendVibration(new SpeedTime(val*2, 2000));
                     Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.HPHitReceived)}: {val}");
                 };
 
@@ -99,6 +104,7 @@ namespace RyonaVibration
 
                 AmazonBrawlHardcoreGame.Player1.LPHitReceived += (s, val) =>
                 {
+                    VibratorController.SendVibration(new SpeedTime(val*2, 3000));
                     Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.LPHitReceived)}: {val}");
                 };
 
@@ -109,11 +115,13 @@ namespace RyonaVibration
 
                 AmazonBrawlHardcoreGame.Player1.HumiliationHPHitReceived += (s, val) =>
                 {
+                    VibratorController.SendVibration(new SpeedTime(val, 3000));
                     Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.HumiliationHPHitReceived)}: {val}");
                 };
 
                 AmazonBrawlHardcoreGame.Player1.OrgasmStarted += (s, val) =>
                 {
+                    VibratorController.SendVibration(new SpeedTime(1, 60000));
                     Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.OrgasmStarted)}: {val}");
                 };
 
@@ -124,16 +132,19 @@ namespace RyonaVibration
 
                 AmazonBrawlHardcoreGame.Player1.SubmissionStarted += (s, val) =>
                 {
+                    VibratorController.SendVibration(new SpeedTime(0.75, 60000));
                     Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.SubmissionStarted)}: {val}");
                 };
 
                 AmazonBrawlHardcoreGame.Player1.SubmissionEnded += (s, val) =>
                 {
+                    VibratorController.SendVibration(new SpeedTime(0, 1));
                     Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.SubmissionEnded)}: {val}");
                 };
 
                 AmazonBrawlHardcoreGame.Player1.RoundEndedLoss += (s, val) =>
                 {
+                    VibratorController.SendVibration(new SpeedTime(1, 4000));
                     Client_NewLogsPublished(this, $"{nameof(AmazonBrawlHardcoreGame.Player1.RoundEndedLoss)}: {val}");
                 };
 

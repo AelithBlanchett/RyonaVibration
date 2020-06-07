@@ -20,22 +20,22 @@ namespace RyonaVibration.Games
         public event EventHandler RoundEndedLoss;
 
         //Percentage of total HP lost
-        public event EventHandler<int> HPUpdated;
+        public event EventHandler<double> HPUpdated;
 
         //Percentage of HP lost / Total HP
-        public event EventHandler<int> HPHitReceived;
+        public event EventHandler<double> HPHitReceived;
 
         //Percentage of LP lost
-        public event EventHandler<int> LPUpdated;
+        public event EventHandler<double> LPUpdated;
 
         //Percentage of LP lost / Total LP
-        public event EventHandler<int> LPHitReceived;
+        public event EventHandler<double> LPHitReceived;
 
         //Percentage of HumHP lost
-        public event EventHandler<int> HumiliationHPUpdated;
+        public event EventHandler<double> HumiliationHPUpdated;
 
-        //Percentage of HumHP lost
-        public event EventHandler<int> HumiliationHPHitReceived;
+        //Percentage of HumHP lost / Total HumHP
+        public event EventHandler<double> HumiliationHPHitReceived;
 
         protected virtual void OnOrgasmStarted()
         {
@@ -60,31 +60,31 @@ namespace RyonaVibration.Games
         protected virtual void OnHPUpdated(int oldValue, int newValue, int maxValue)
         {
             if(oldValue == newValue || oldValue < newValue) { return; }
-            var percentageHit = Math.Abs(oldValue - newValue) * 1m / maxValue * 100m;
-            HPHitReceived?.Invoke(this, (int)percentageHit);
+            var percentageHit = Math.Abs(oldValue - newValue) * 1d / maxValue;
+            HPHitReceived?.Invoke(this, percentageHit);
 
-            var percentageHP = 1m * newValue / maxValue * 100m;
-            HPUpdated?.Invoke(this, (int)percentageHP);
+            var percentageHP = 1d * newValue / maxValue;
+            HPUpdated?.Invoke(this, percentageHP);
         }
 
         protected virtual void OnLPUpdated(int oldValue, int newValue, int maxValue)
         {
             if (oldValue == newValue || oldValue < newValue) { return; }
-            var percentageHit = Math.Abs(oldValue - newValue) * 1m / maxValue * 100m;
-            LPHitReceived?.Invoke(this, (int)percentageHit);
+            var percentageHit = Math.Abs(oldValue - newValue) * 1d / maxValue;
+            LPHitReceived?.Invoke(this, percentageHit);
 
-            var percentageLP = 1m * newValue / maxValue * 100;
-            LPUpdated?.Invoke(this, (int)percentageLP);
+            var percentageLP = 1d * newValue / maxValue;
+            LPUpdated?.Invoke(this, percentageLP);
         }
 
         protected virtual void OnHumHPUpdated(int oldValue, int newValue, int maxValue)
         {
             if (oldValue == newValue || oldValue < newValue) { return; }
-            var percentageHit = Math.Abs(oldValue - newValue) * 1m / maxValue * 100m;
-            HumiliationHPHitReceived?.Invoke(this, (int)percentageHit);
+            var percentageHit = Math.Abs(oldValue - newValue) * 1d / maxValue;
+            HumiliationHPHitReceived?.Invoke(this, percentageHit);
 
-            var percentageLP = 1m * newValue / maxValue * 100m;
-            HumiliationHPUpdated?.Invoke(this, (int)percentageLP);
+            var percentageLP = 1d * newValue / maxValue;
+            HumiliationHPUpdated?.Invoke(this, percentageLP);
         }
     }
 }
