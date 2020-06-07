@@ -30,7 +30,7 @@ namespace RyonaVibration
         public static StringBuilder Logs { get; set; } = new StringBuilder();
 
 
-        public VibratorController VibratorController { get; set; }
+        public VibratorController VibratorController { get; set; } = new VibratorController();
 
         private async Task Connect()
         {
@@ -46,7 +46,7 @@ namespace RyonaVibration
 
         private async void btnTestVibrate_Click(object sender, EventArgs e)
         {
-            await VibratorController.TestDevice(1);
+            
         }
 
         private void rtbLogs_TextChanged(object sender, EventArgs e)
@@ -74,20 +74,51 @@ namespace RyonaVibration
 
         public AmazonBrawlHardcoreGame AmazonBrawlHardcoreGame { get; set; }
 
+        public RRXXGame RRXXGame { get; set; }
+
         private async void btnReadMemory_Click(object sender, EventArgs e)
         {
-            if(VibratorController == null)
-            {
-                MessageBox.Show("No sextoys paired yet.");
-                return;
-            }
+            //if(!VibratorController.Client.Devices.Any())
+            //{
+            //    MessageBox.Show("No sextoys paired yet.");
+            //    //return;
+            //}
+
             if (rbAMAZON.Checked)
             {
+                if (AmazonBrawlHardcoreGame != null)
+                {
+                    AmazonBrawlHardcoreGame.Dispose();
+                }
                 AmazonBrawlHardcoreGame = new AmazonBrawlHardcoreGame();
                 AmazonBrawlHardcoreGame.AttachToGame();
                 AmazonBrawlHardcoreGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
-                await AmazonBrawlHardcoreGame.StartListening(PlayerNumber);
+                AmazonBrawlHardcoreGame.Player1.ValueUpdated += Player1_ValueUpdated;
+                await AmazonBrawlHardcoreGame.StartListening(PlayerNumber, VibratorController);
             }
+            else if (rbRRXX.Checked)
+            {
+                if(RRXXGame != null)
+                {
+                    RRXXGame.Dispose();
+                }
+                RRXXGame = new RRXXGame();
+                RRXXGame.AttachToGame();
+                RRXXGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
+
+                //DEBUG
+                VibratorController.NewLogsPublished += Client_NewLogsPublished;
+                RRXXGame.Player1.ValueUpdated += Player1_ValueUpdated;
+
+
+
+                await RRXXGame.StartListening(PlayerNumber, VibratorController);
+            }
+        }
+
+        private void Player1_ValueUpdated(object sender, Tuple<string, string> e)
+        {
+            Client_NewLogsPublished(this, e.ToString());
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)

@@ -77,6 +77,9 @@
     <Reference Include="JetBrains.Annotations, Version=2020.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2020.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="ManagedWinapi">
+      <HintPath>.\ManagedWinapi.dll</HintPath>
+    </Reference>
     <Reference Include="Memory, Version=1.2.19.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Memory.dll.1.2.19\lib\net472\Memory.dll</HintPath>
     </Reference>
@@ -141,6 +144,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Games\RRXX\RRXXGame.cs" />
+    <Compile Include="Games\RRXX\RRXXPlayerStats.cs" />
     <Compile Include="Games\Amazon\AmazonBrawlHardcoreGame.cs" />
     <Compile Include="Games\Amazon\AmazonBrawlPlayerStats.cs" />
     <Compile Include="Games\Game.cs" />

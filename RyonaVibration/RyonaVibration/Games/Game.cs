@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ManagedWinapi;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -37,21 +39,31 @@ namespace RyonaVibration.Games
             GameName = gameName;
         }
 
-        public async Task StartListening(int playerNumber)
+        int readCounts = 0;
+
+        public async Task StartListening(int playerNumber, VibratorController vibratorController)
         {
             while (Attached && Mem.theProc != null && !Mem.theProc.HasExited)
             {
                 var stats = ReadEventForPlayerNumber(playerNumber);
-                //rtbLogs.AppendText("\n--------------------\n");
-                //foreach (var prop in stats.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-                //{
-                //    if (prop.GetValue(stats) != null)
-                //    {
-                //        //rtbLogs.AppendText("\n" + prop.Name + ": " + prop.GetValue(stats).ToString());
-                //    }
-                //}
+
+                if(readCounts < 10)
+                {
+                    readCounts++;
+                    vibratorController.IgnoreCommands = true;
+                }
+                else if(vibratorController.IgnoreCommands)
+                {
+                    vibratorController.IgnoreCommands = false;
+                }
+
                 await Task.Delay(PollingRate);
             }
+        }
+
+        public void StopListening()
+        {
+            Attached = false;
         }
 
         public void AttachToGame()
@@ -101,6 +113,50 @@ namespace RyonaVibration.Games
             return player;
         }
 
+        private const long HumStartAddress = 0x1B0674700;
+        private const long HumEndAddress = 0x1B0674800;
+
+        private static long GetMemoryAddressOfString(byte[] searchedBytes, Process p)
+        {
+            //List<int> addrList = new List<int>();
+            long addr = 0;
+            int speed = 1024 * 64;
+            for (long j = HumStartAddress; j < HumEndAddress; j += speed)
+            {
+                ManagedWinapi.ProcessMemoryChunk mem = new ProcessMemoryChunk(p, (IntPtr)j, speed + searchedBytes.Length);
+
+                byte[] bigMem = mem.Read();
+
+                for (int k = 0; k < bigMem.Length - searchedBytes.Length; k++)
+                {
+                    bool found = true;
+                    for (int l = 0; l < searchedBytes.Length; l++)
+                    {
+                        if (bigMem[k + l] != searchedBytes[l])
+                        {
+                            found = false;
+                            break;
+                        }
+                    }
+                    if (found)
+                    {
+                        addr = k + j;
+                        break;
+                    }
+                }
+                if (addr != 0)
+                {
+                    //addrList.Add(addr);
+                    //addr = 0;
+                    break;
+                }
+            }
+            //return addrList;
+            return addr;
+        }
+
+        public static string FoundSubmissionAddress = "";
+
         public virtual T ReadEventForPlayerNumber(int playerNumber)
         {
             var startKey = $"{GameName}.P{playerNumber}.";
@@ -117,6 +173,18 @@ namespace RyonaVibration.Games
                 if (keysToAssign.Contains(propKeyName))
                 {
                     var address = ConfigurationManager.AppSettings[propKeyName];
+
+                    if(prop.Name == "SubmissionPercent" && FoundSubmissionAddress == "")
+                    {
+                        var addr = GetMemoryAddressOfString(new byte[] { 0x3F, 0x50, 0x00, 0x00 }, Mem.theProc);
+                        FoundSubmissionAddress = (addr - 4).ToString("X"); // -4 because its 4 bytes before
+                    }
+
+                    if (prop.Name == "SubmissionPercent" && FoundSubmissionAddress != "")
+                    {
+                        address = FoundSubmissionAddress;
+                    }
+
                     if (prop.PropertyType == typeof(string))
                     {
                         var value = Mem.ReadString(address, length: 4).ToString();
@@ -139,8 +207,22 @@ namespace RyonaVibration.Games
                     }
                     else if (prop.PropertyType == typeof(float))
                     {
-                        var value = Mem.ReadFloat(address);
-                        prop.SetValue(player, value);
+                        //var value = Mem.ReadFloat(address, round:false);
+                        var value = Mem.ReadBytes(address, 4);
+                        if (value != null)
+                        {
+                            var beValue = BitConverter.EndianBitConverter.BigEndian.ToSingle(value, 0);
+                            var leValue = BitConverter.EndianBitConverter.LittleEndian.ToSingle(value, 0);
+                            if (beValue > -1000 && beValue < 1000)
+                            {
+                                prop.SetValue(player, beValue);
+                            }
+                            else
+                            {
+                                prop.SetValue(player, leValue);
+                            }
+                        }
+                        
                     }
                     else if (prop.PropertyType == typeof(bool))
                     {
@@ -159,7 +241,7 @@ namespace RyonaVibration.Games
                     }
                     else
                     {
-
+                        
                     }
                 }
             }

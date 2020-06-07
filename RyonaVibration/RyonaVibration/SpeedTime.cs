@@ -29,8 +29,8 @@ namespace RyonaVibration
         }
 
         //Between 0 and 1, 1 = 100%, 0.5 = 50%
-        public double SpeedInPercent { get; set; }
+        public double SpeedInPercent { get; set; } = 0d;
 
-        public int TimeInMs { get; set; }
+        public int TimeInMs { get; set; } = 0;
     }
 }

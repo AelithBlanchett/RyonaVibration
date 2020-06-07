@@ -99,22 +99,22 @@
             // rbAMAZON
             // 
             this.rbAMAZON.AutoSize = true;
-            this.rbAMAZON.Checked = true;
             this.rbAMAZON.Location = new System.Drawing.Point(6, 65);
             this.rbAMAZON.Name = "rbAMAZON";
             this.rbAMAZON.Size = new System.Drawing.Size(139, 17);
             this.rbAMAZON.TabIndex = 5;
-            this.rbAMAZON.TabStop = true;
             this.rbAMAZON.Text = "Amazon Brawl Hardcore";
             this.rbAMAZON.UseVisualStyleBackColor = true;
             // 
             // rbRRXX
             // 
             this.rbRRXX.AutoSize = true;
+            this.rbRRXX.Checked = true;
             this.rbRRXX.Location = new System.Drawing.Point(6, 42);
             this.rbRRXX.Name = "rbRRXX";
             this.rbRRXX.Size = new System.Drawing.Size(111, 17);
             this.rbRRXX.TabIndex = 4;
+            this.rbRRXX.TabStop = true;
             this.rbRRXX.Text = "Rumble Roses XX";
             this.rbRRXX.UseVisualStyleBackColor = true;
             // 
