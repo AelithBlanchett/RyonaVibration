@@ -72,11 +72,14 @@ namespace RyonaVibration.Games
 
             if (gameProcId != 0)
             {
-                Attached = true;
                 ProcessId = gameProcId.ToString();
                 if (!Mem.OpenProcess(gameProcId))
                 {
                     MessageBox.Show("Couldn't attach to game.");
+                }
+                else
+                {
+                    Attached = true;
                 }
             }
             else
@@ -113,7 +116,7 @@ namespace RyonaVibration.Games
             return player;
         }
 
-        private const long HumStartAddress = 0x1B0674700;
+        private const long HumStartAddress = 0x1B0674600;
         private const long HumEndAddress = 0x1B0674800;
 
         private static long GetMemoryAddressOfString(byte[] searchedBytes, Process p)

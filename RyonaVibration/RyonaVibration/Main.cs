@@ -44,12 +44,12 @@ namespace RyonaVibration
 
         private void Client_NewLogsPublished(object sender, string e)
         {
-            rtbLogs.AppendText(e+"\n");
+            rtbLogs.AppendText(e + "\n");
         }
 
         private async void btnTestVibrate_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void rtbLogs_TextChanged(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace RyonaVibration
 
         private async void btnEmergency_Click(object sender, EventArgs e)
         {
-            if(VibratorController != null)
+            if (VibratorController != null)
             {
                 await VibratorController.EmergencyStop();
             }
@@ -71,7 +71,7 @@ namespace RyonaVibration
         {
             get
             {
-               return rbLeft.Checked ? 1 : 2;
+                return rbLeft.Checked ? 1 : 2;
             }
         }
 
@@ -81,11 +81,13 @@ namespace RyonaVibration
 
         private async void btnReadMemory_Click(object sender, EventArgs e)
         {
-            //if(!VibratorController.Client.Devices.Any())
-            //{
-            //    MessageBox.Show("No sextoys paired yet.");
-            //    //return;
-            //}
+            if (!VibratorController.Client.Devices.Any())
+            {
+                MessageBox.Show("No sextoys paired yet.");
+#if DEBUG == false
+                return;
+#endif
+            }
             if (!HasInitializedVibrator)
             {
                 VibratorController.NewLogsPublished -= Client_NewLogsPublished;
@@ -100,27 +102,37 @@ namespace RyonaVibration
                 }
                 AmazonBrawlHardcoreGame = new AmazonBrawlHardcoreGame();
                 AmazonBrawlHardcoreGame.AttachToGame();
-                AmazonBrawlHardcoreGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
+                if (AmazonBrawlHardcoreGame.Attached)
+                {
+                    AmazonBrawlHardcoreGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
 
-                //DEBUG
-                AmazonBrawlHardcoreGame.Player1.ValueUpdated += Player1_ValueUpdated;
+                    //DEBUG
+                    AmazonBrawlHardcoreGame.Player1.ValueUpdated += Player1_ValueUpdated;
 
-                await AmazonBrawlHardcoreGame.StartListening(PlayerNumber, VibratorController);
+                    await AmazonBrawlHardcoreGame.StartListening(PlayerNumber, VibratorController);
+                }
+
             }
             else if (rbRRXX.Checked)
             {
-                if(RRXXGame != null)
+                if (RRXXGame != null)
                 {
                     RRXXGame.Dispose();
                 }
                 RRXXGame = new RRXXGame();
                 RRXXGame.AttachToGame();
-                RRXXGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
 
-                //DEBUG
-                RRXXGame.Player1.ValueUpdated += Player1_ValueUpdated;
+                if (RRXXGame.Attached)
+                {
+                    RRXXGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
 
-                await RRXXGame.StartListening(PlayerNumber, VibratorController);
+                    //DEBUG
+                    RRXXGame.Player1.ValueUpdated += Player1_ValueUpdated;
+
+                    await RRXXGame.StartListening(PlayerNumber, VibratorController);
+                }
+
+
             }
         }
 

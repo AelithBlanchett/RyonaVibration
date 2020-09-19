@@ -72,7 +72,7 @@ namespace RyonaVibration.Games
 
             player.SubmissionEnded += (s, val) =>
             {
-                vibratorController.SendVibration(new SpeedTime(0, 1, true));
+                vibratorController.SendVibration(new SpeedTime(0, 1000, true));
                 vibratorController.PublishLogs($"{nameof(player.SubmissionEnded)}: {val}");
             };
 

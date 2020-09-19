@@ -26,6 +26,8 @@ namespace RyonaVibration
             {
                 TimeInMs = 100;
             }
+
+            Force = force;
         }
 
         //Between 0 and 1, 1 = 100%, 0.5 = 50%

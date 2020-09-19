@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.btnConnect = new System.Windows.Forms.Button();
             this.rtbLogs = new System.Windows.Forms.RichTextBox();
-            this.btnTestVibrate = new System.Windows.Forms.Button();
             this.rbSC6 = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbAMAZON = new System.Windows.Forms.RadioButton();
@@ -64,19 +64,10 @@
             this.rtbLogs.Text = "";
             this.rtbLogs.TextChanged += new System.EventHandler(this.rtbLogs_TextChanged);
             // 
-            // btnTestVibrate
-            // 
-            this.btnTestVibrate.Location = new System.Drawing.Point(12, 110);
-            this.btnTestVibrate.Name = "btnTestVibrate";
-            this.btnTestVibrate.Size = new System.Drawing.Size(130, 23);
-            this.btnTestVibrate.TabIndex = 2;
-            this.btnTestVibrate.Text = "Test Vibrate";
-            this.btnTestVibrate.UseVisualStyleBackColor = true;
-            this.btnTestVibrate.Click += new System.EventHandler(this.btnTestVibrate_Click);
-            // 
             // rbSC6
             // 
             this.rbSC6.AutoSize = true;
+            this.rbSC6.Enabled = false;
             this.rbSC6.Location = new System.Drawing.Point(6, 19);
             this.rbSC6.Name = "rbSC6";
             this.rbSC6.Size = new System.Drawing.Size(90, 17);
@@ -121,9 +112,9 @@
             // btnEmergency
             // 
             this.btnEmergency.BackColor = System.Drawing.Color.Red;
-            this.btnEmergency.Location = new System.Drawing.Point(12, 138);
+            this.btnEmergency.Location = new System.Drawing.Point(12, 110);
             this.btnEmergency.Name = "btnEmergency";
-            this.btnEmergency.Size = new System.Drawing.Size(130, 23);
+            this.btnEmergency.Size = new System.Drawing.Size(130, 51);
             this.btnEmergency.TabIndex = 5;
             this.btnEmergency.Text = "Emergency Stop";
             this.btnEmergency.UseVisualStyleBackColor = false;
@@ -135,7 +126,7 @@
             this.btnReadMemory.Name = "btnReadMemory";
             this.btnReadMemory.Size = new System.Drawing.Size(130, 23);
             this.btnReadMemory.TabIndex = 6;
-            this.btnReadMemory.Text = "Start Game";
+            this.btnReadMemory.Text = "Hook to Game";
             this.btnReadMemory.UseVisualStyleBackColor = true;
             this.btnReadMemory.Click += new System.EventHandler(this.btnReadMemory_Click);
             // 
@@ -181,11 +172,11 @@
             this.Controls.Add(this.btnReadMemory);
             this.Controls.Add(this.btnEmergency);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnTestVibrate);
             this.Controls.Add(this.rtbLogs);
             this.Controls.Add(this.btnConnect);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main";
-            this.Text = "Form1";
+            this.Text = "Ryona Vibrations";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -199,7 +190,6 @@
 
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.RichTextBox rtbLogs;
-        private System.Windows.Forms.Button btnTestVibrate;
         private System.Windows.Forms.RadioButton rbSC6;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton rbRRXX;

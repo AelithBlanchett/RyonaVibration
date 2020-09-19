@@ -107,31 +107,32 @@ namespace RyonaVibration
 
         public static DateTime NextAvailableCommandDate { get; set; } = DateTime.MinValue;
 
-        public async void SendVibration(SpeedTime e)
+        public async void SendVibration(SpeedTime ev)
         {
             if(CurrentTaskSpeed == null)
             {
-                CurrentTaskSpeed = e;
+                CurrentTaskSpeed = ev;
             }
-            else if(CurrentTaskSpeed.SpeedInPercent > e.SpeedInPercent && NextAvailableCommandDate > DateTime.Now && e.Force == false)
+            else if(ev.Force == false && (CurrentTaskSpeed.SpeedInPercent > ev.SpeedInPercent && DateTime.Now.AddMilliseconds(ev.TimeInMs) < NextAvailableCommandDate))
             {
-                PublishLogs($"SKIPPED lower vibration of {e.SpeedInPercent * 100d}% for {e.TimeInMs}ms");
+                PublishLogs($"SKIPPED lower vibration of {ev.SpeedInPercent * 100d}% for {ev.TimeInMs}ms");
                 return;
             }
 
             if (IgnoreCommands)
             {
-                PublishLogs($"SKIPPED FIRST COMMANDS vibration of {e.SpeedInPercent * 100d}% for {e.TimeInMs}ms");
+                PublishLogs($"SKIPPED FIRST COMMANDS vibration of {ev.SpeedInPercent * 100d}% for {ev.TimeInMs}ms");
                 return;
             }
 
             var generatedGuid = Guid.NewGuid();
             CurrentTaskGuid = generatedGuid;
-            NextAvailableCommandDate = DateTime.Now.AddMilliseconds(e.TimeInMs);
+            CurrentTaskSpeed = ev;
+            NextAvailableCommandDate = DateTime.Now.AddMilliseconds(CurrentTaskSpeed.TimeInMs);
 
             if(Client == null)
             {
-                PublishLogs($"SENT vibration of {e.SpeedInPercent * 100d}% for {e.TimeInMs}ms");
+                PublishLogs($"SENT vibration of {CurrentTaskSpeed.SpeedInPercent * 100d}% for {CurrentTaskSpeed.TimeInMs}ms");
                 return;
             }
 
@@ -143,11 +144,11 @@ namespace RyonaVibration
                 {
                     if (cmdType == typeof(VibrateCmd))
                     {
-                        PublishLogs($"Vibrating all motors of {device.Name} at {e.SpeedInPercent*100d}% for 1s.");
+                        PublishLogs($"Vibrating all motors of {device.Name} at {CurrentTaskSpeed.SpeedInPercent*100d}% for {CurrentTaskSpeed.TimeInMs}ms.");
                         try
                         {
-                            await device.SendVibrateCmd(e.SpeedInPercent);
-                            await Task.Delay(e.TimeInMs);
+                            await device.SendVibrateCmd(CurrentTaskSpeed.SpeedInPercent);
+                            await Task.Delay(CurrentTaskSpeed.TimeInMs);
                             if(CurrentTaskGuid == generatedGuid)
                             {
                                 await device.SendVibrateCmd(0);
@@ -160,11 +161,11 @@ namespace RyonaVibration
                     }
                     else if (cmdType == typeof(RotateCmd))
                     {
-                        PublishLogs($"Rotating {device.Name} at {e.SpeedInPercent * 100d}% for 1s.");
+                        PublishLogs($"Rotating {device.Name} at {CurrentTaskSpeed.SpeedInPercent * 100d}% for 1s.");
                         try
                         {
-                            await device.SendRotateCmd(e.SpeedInPercent, true);
-                            await Task.Delay(e.TimeInMs);
+                            await device.SendRotateCmd(CurrentTaskSpeed.SpeedInPercent, true);
+                            await Task.Delay(CurrentTaskSpeed.TimeInMs);
                             if (CurrentTaskGuid == generatedGuid)
                             {
                                 await device.SendRotateCmd(0, true);
@@ -177,15 +178,15 @@ namespace RyonaVibration
                     }
                     else if (cmdType == typeof(LinearCmd))
                     {
-                        PublishLogs($"Oscillating linear motors of {device.Name} to {e.SpeedInPercent * 100d}%");
+                        PublishLogs($"Oscillating linear motors of {device.Name} to {CurrentTaskSpeed.SpeedInPercent * 100d}%");
                         try
                         {
-                            await device.SendLinearCmd((uint)e.TimeInMs, e.SpeedInPercent);
-                            await Task.Delay(e.TimeInMs);
+                            await device.SendLinearCmd((uint)CurrentTaskSpeed.TimeInMs, CurrentTaskSpeed.SpeedInPercent);
+                            await Task.Delay(CurrentTaskSpeed.TimeInMs);
                             if (CurrentTaskGuid == generatedGuid)
                             {
-                                await device.SendLinearCmd((uint)e.TimeInMs, 0);
-                                await Task.Delay(e.TimeInMs);
+                                await device.SendLinearCmd((uint)CurrentTaskSpeed.TimeInMs, 0);
+                                await Task.Delay(CurrentTaskSpeed.TimeInMs);
                             }
                         }
                         catch (ButtplugDeviceException)
