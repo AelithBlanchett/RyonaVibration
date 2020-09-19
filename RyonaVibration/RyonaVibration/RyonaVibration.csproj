@@ -179,6 +179,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Games\SC\SCGame.cs" />
+    <Compile Include="Games\SC\SCPlayerStats.cs" />
     <Compile Include="Games\RRXX\RRXXGame.cs" />
     <Compile Include="Games\RRXX\RRXXPlayerStats.cs" />
     <Compile Include="Games\Amazon\AmazonBrawlHardcoreGame.cs" />

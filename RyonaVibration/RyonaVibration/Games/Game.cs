@@ -208,7 +208,7 @@ namespace RyonaVibration.Games
                         var value = Mem.ReadDouble(address, round: false);
                         prop.SetValue(player, value);
                     }
-                    else if (prop.PropertyType == typeof(float))
+                    else if (prop.PropertyType == typeof(float) && GameName == "RRXX")
                     {
                         //var value = Mem.ReadFloat(address, round:false);
                         var value = Mem.ReadBytes(address, 4);
@@ -226,6 +226,16 @@ namespace RyonaVibration.Games
                             }
                         }
                         
+                    }
+                    else if (prop.PropertyType == typeof(float))
+                    {
+                        var value = Mem.ReadBytes(address, 4);
+                        if (value != null)
+                        {
+                            var leValue = BitConverter.EndianBitConverter.LittleEndian.ToSingle(value, 0);
+                            prop.SetValue(player, leValue);
+                        }
+
                     }
                     else if (prop.PropertyType == typeof(bool))
                     {

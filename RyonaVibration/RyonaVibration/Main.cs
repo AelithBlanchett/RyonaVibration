@@ -79,6 +79,8 @@ namespace RyonaVibration
 
         public RRXXGame RRXXGame { get; set; }
 
+        public SCGame SCGame { get; set; }
+
         private async void btnReadMemory_Click(object sender, EventArgs e)
         {
             if (!VibratorController.Client.Devices.Any())
@@ -132,6 +134,25 @@ namespace RyonaVibration
                     await RRXXGame.StartListening(PlayerNumber, VibratorController);
                 }
 
+
+            }
+            else if (rbSC6.Checked)
+            {
+                if (SCGame != null)
+                {
+                    SCGame.Dispose();
+                }
+                SCGame = new SCGame();
+                SCGame.AttachToGame();
+                if (SCGame.Attached)
+                {
+                    SCGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
+
+                    //DEBUG
+                    SCGame.Player1.ValueUpdated += Player1_ValueUpdated;
+
+                    await SCGame.StartListening(PlayerNumber, VibratorController);
+                }
 
             }
         }

@@ -67,7 +67,6 @@
             // rbSC6
             // 
             this.rbSC6.AutoSize = true;
-            this.rbSC6.Enabled = false;
             this.rbSC6.Location = new System.Drawing.Point(6, 19);
             this.rbSC6.Name = "rbSC6";
             this.rbSC6.Size = new System.Drawing.Size(90, 17);

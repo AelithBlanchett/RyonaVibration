@@ -73,6 +73,7 @@ namespace RyonaVibration.Games
         {
             if(oldValue == newValue) { return; }
             if (newValue > oldValue) { LifeRefilled?.Invoke(this, null); return; }
+            if (newValue < oldValue && newValue <= 0 && oldValue > 0) { RoundEndedLoss?.Invoke(this, null); return; }
             ValueUpdated?.Invoke(this, new Tuple<string, string>("OnHPUpdated", newValue.ToString()));
             var percentageHit = Math.Abs(oldValue - newValue) * 1d / maxValue;
             HPHitReceived?.Invoke(this, percentageHit);
