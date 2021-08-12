@@ -48,6 +48,26 @@ namespace RyonaVibration.Games
         //Percentage of HumHP lost / Total HumHP
         public event EventHandler<Tuple<string, string>> ValueUpdated;
 
+        public virtual void UnsubscribeFromAllEvents()
+        {
+            OrgasmStarted = null;
+            OrgasmEnded = null;
+            SubmissionStarted = null;
+            SubmissionEnded = null;
+            LifeRefilled = null;
+            HumLifeRefilled = null;
+            HumOrgasmStarted = null;
+            HumOrgasmEnded = null;
+            RoundEndedLoss = null;
+            HPUpdated = null;
+            HPHitReceived = null;
+            LPUpdated = null;
+            LPHitReceived = null;
+            HumiliationHPUpdated = null;
+            HumiliationHPHitReceived = null;
+            ValueUpdated = null;
+        }
+
         protected virtual void OnOrgasmStarted()
         {
             OrgasmStarted?.Invoke(this, null);
@@ -72,6 +92,7 @@ namespace RyonaVibration.Games
         protected virtual void OnHPUpdated(int oldValue, int newValue, int maxValue)
         {
             if(oldValue == newValue) { return; }
+            if(oldValue > 150 && newValue <= 0f) { return; }
             if (newValue > oldValue) { LifeRefilled?.Invoke(this, null); return; }
             if (newValue < oldValue && newValue <= 0 && oldValue > 0) { RoundEndedLoss?.Invoke(this, null); return; }
             ValueUpdated?.Invoke(this, new Tuple<string, string>("OnHPUpdated", newValue.ToString()));

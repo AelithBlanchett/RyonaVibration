@@ -55,18 +55,6 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>728451F6F5FBAEDF3B9E787DBB25ADB57330495C</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>RyonaVibration_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>true</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
@@ -116,7 +104,7 @@
       <HintPath>.\ManagedWinapi.dll</HintPath>
     </Reference>
     <Reference Include="Memory, Version=1.2.19.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Memory.dll.1.2.19\lib\net472\Memory.dll</HintPath>
+      <HintPath>.\Memory.dll</HintPath>
     </Reference>
     <Reference Include="Namotion.Reflection, Version=1.0.11.0, Culture=neutral, PublicKeyToken=c2f9c3bdfae56102, processorArchitecture=MSIL">
       <HintPath>..\packages\Namotion.Reflection.1.0.11\lib\net45\Namotion.Reflection.dll</HintPath>

@@ -16,6 +16,8 @@ namespace RyonaVibration.Games
 
         }
 
+        public bool HasRecentlyTriggeredRoundLoss { get; set; } = false;
+
         public override void AttachListenersForPlayerNumber(VibratorController vibratorController, int playerNumber)
         {
             var player = GetPlayerByNumber(playerNumber);
@@ -33,9 +35,27 @@ namespace RyonaVibration.Games
 
             player.RoundEndedLoss += (s, val) =>
             {
-                vibratorController.SendVibration(new SpeedTime(1, 10000, true));
+                if (HasRecentlyTriggeredRoundLoss)
+                {
+                    HasRecentlyTriggeredRoundLoss = false;
+                    return;
+                }
+                vibratorController.SendVibration(new SpeedTime(1, 15000, true));
                 vibratorController.PublishLogs($"{nameof(player.RoundEndedLoss)}: {val}");
+                HasRecentlyTriggeredRoundLoss = true;
             };
+
+            for (int i = 1; i < 5; i++)
+            {
+                if(i != playerNumber)
+                {
+                    var tempPlayer = GetPlayerByNumber(i);
+                    if (tempPlayer != null)
+                    {
+                        tempPlayer.UnsubscribeFromAllEvents();
+                    }
+                }
+            }
         }
     }
 }

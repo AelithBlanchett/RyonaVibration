@@ -40,15 +40,17 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbRight = new System.Windows.Forms.RadioButton();
             this.rbLeft = new System.Windows.Forms.RadioButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(12, 12);
+            this.btnConnect.Location = new System.Drawing.Point(6, 18);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(130, 92);
+            this.btnConnect.Size = new System.Drawing.Size(124, 58);
             this.btnConnect.TabIndex = 0;
             this.btnConnect.Text = "Pair Sextoy";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -57,9 +59,9 @@
             // rtbLogs
             // 
             this.rtbLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.rtbLogs.Location = new System.Drawing.Point(12, 195);
+            this.rtbLogs.Location = new System.Drawing.Point(12, 186);
             this.rtbLogs.Name = "rtbLogs";
-            this.rtbLogs.Size = new System.Drawing.Size(325, 160);
+            this.rtbLogs.Size = new System.Drawing.Size(325, 169);
             this.rtbLogs.TabIndex = 1;
             this.rtbLogs.Text = "";
             this.rtbLogs.TextChanged += new System.EventHandler(this.rtbLogs_TextChanged);
@@ -79,12 +81,12 @@
             this.groupBox1.Controls.Add(this.rbAMAZON);
             this.groupBox1.Controls.Add(this.rbRRXX);
             this.groupBox1.Controls.Add(this.rbSC6);
-            this.groupBox1.Location = new System.Drawing.Point(148, 12);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 92);
+            this.groupBox1.Size = new System.Drawing.Size(194, 92);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Game";
+            this.groupBox1.Text = "Game (Green = Auto-detected)";
             // 
             // rbAMAZON
             // 
@@ -111,9 +113,9 @@
             // btnEmergency
             // 
             this.btnEmergency.BackColor = System.Drawing.Color.Red;
-            this.btnEmergency.Location = new System.Drawing.Point(12, 110);
+            this.btnEmergency.Location = new System.Drawing.Point(6, 111);
             this.btnEmergency.Name = "btnEmergency";
-            this.btnEmergency.Size = new System.Drawing.Size(130, 51);
+            this.btnEmergency.Size = new System.Drawing.Size(124, 51);
             this.btnEmergency.TabIndex = 5;
             this.btnEmergency.Text = "Emergency Stop";
             this.btnEmergency.UseVisualStyleBackColor = false;
@@ -121,9 +123,9 @@
             // 
             // btnReadMemory
             // 
-            this.btnReadMemory.Location = new System.Drawing.Point(12, 166);
+            this.btnReadMemory.Location = new System.Drawing.Point(6, 82);
             this.btnReadMemory.Name = "btnReadMemory";
-            this.btnReadMemory.Size = new System.Drawing.Size(130, 23);
+            this.btnReadMemory.Size = new System.Drawing.Size(124, 23);
             this.btnReadMemory.TabIndex = 6;
             this.btnReadMemory.Text = "Hook to Game";
             this.btnReadMemory.UseVisualStyleBackColor = true;
@@ -133,9 +135,9 @@
             // 
             this.groupBox2.Controls.Add(this.rbRight);
             this.groupBox2.Controls.Add(this.rbLeft);
-            this.groupBox2.Location = new System.Drawing.Point(154, 119);
+            this.groupBox2.Location = new System.Drawing.Point(12, 110);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 70);
+            this.groupBox2.Size = new System.Drawing.Size(194, 70);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Player Side";
@@ -149,6 +151,7 @@
             this.rbRight.TabIndex = 4;
             this.rbRight.Text = "Right";
             this.rbRight.UseVisualStyleBackColor = true;
+            this.rbRight.CheckedChanged += new System.EventHandler(this.rbRight_CheckedChanged);
             // 
             // rbLeft
             // 
@@ -161,18 +164,29 @@
             this.rbLeft.TabStop = true;
             this.rbLeft.Text = "Left";
             this.rbLeft.UseVisualStyleBackColor = true;
+            this.rbLeft.CheckedChanged += new System.EventHandler(this.rbLeft_CheckedChanged);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnConnect);
+            this.groupBox3.Controls.Add(this.btnEmergency);
+            this.groupBox3.Controls.Add(this.btnReadMemory);
+            this.groupBox3.Location = new System.Drawing.Point(212, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(136, 168);
+            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Manual mode";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(360, 360);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.btnReadMemory);
-            this.Controls.Add(this.btnEmergency);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.rtbLogs);
-            this.Controls.Add(this.btnConnect);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main";
             this.Text = "Ryona Vibrations";
@@ -181,6 +195,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -198,6 +213,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbRight;
         private System.Windows.Forms.RadioButton rbLeft;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 

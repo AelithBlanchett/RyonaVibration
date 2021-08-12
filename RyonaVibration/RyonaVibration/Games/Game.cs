@@ -66,7 +66,7 @@ namespace RyonaVibration.Games
             Attached = false;
         }
 
-        public void AttachToGame()
+        public void AttachToGame(bool openPopup = true)
         {
             int gameProcId = Mem.GetProcIdFromName(ProcessName.Replace(".exe", ""));
 
@@ -75,7 +75,10 @@ namespace RyonaVibration.Games
                 ProcessId = gameProcId.ToString();
                 if (!Mem.OpenProcess(gameProcId))
                 {
-                    MessageBox.Show("Couldn't attach to game.");
+                    if (openPopup)
+                    {
+                        MessageBox.Show("Couldn't attach to game.");
+                    }
                 }
                 else
                 {
@@ -85,7 +88,10 @@ namespace RyonaVibration.Games
             else
             {
                 Attached = false;
-                MessageBox.Show("The game isn't running yet.");
+                if (openPopup)
+                {
+                    MessageBox.Show("The game isn't running yet.");
+                }
             }
         }
 
@@ -172,7 +178,7 @@ namespace RyonaVibration.Games
 
             foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                var propKeyName = $"{GameName}.P1.{prop.Name}";
+                var propKeyName = $"{GameName}.P{playerNumber}.{prop.Name}";
                 if (keysToAssign.Contains(propKeyName))
                 {
                     var address = ConfigurationManager.AppSettings[propKeyName];

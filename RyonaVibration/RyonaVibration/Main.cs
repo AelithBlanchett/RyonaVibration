@@ -21,10 +21,56 @@ namespace RyonaVibration
         public Main()
         {
             InitializeComponent();
+            btnConnect_Click(this, null);
+            if (AutoDetectRunningGame())
+            {
+                btnReadMemory_Click(this, null);
+            }
         }
+
         private async void btnConnect_Click(object sender, EventArgs e)
         {
             await Connect();
+        }
+
+        private bool AutoDetectRunningGame()
+        {
+            AmazonBrawlHardcoreGame = new AmazonBrawlHardcoreGame();
+            RRXXGame = new RRXXGame();
+            SCGame = new SCGame();
+
+            AmazonBrawlHardcoreGame.AttachToGame(false);
+            RRXXGame.AttachToGame(false);
+            SCGame.AttachToGame(false);
+
+            if (AmazonBrawlHardcoreGame.Attached)
+            {
+                rbAMAZON.Checked = true;
+                rbRRXX.Checked = false;
+                rbSC6.Checked = false;
+
+                rbAMAZON.ForeColor = Color.Green;
+            }
+
+            if (RRXXGame.Attached)
+            {
+                rbAMAZON.Checked = false;
+                rbRRXX.Checked = true;
+                rbSC6.Checked = false;
+
+                rbRRXX.ForeColor = Color.Green;
+            }
+
+            if (SCGame.Attached)
+            {
+                rbAMAZON.Checked = false;
+                rbRRXX.Checked = false;
+                rbSC6.Checked = true;
+
+                rbSC6.ForeColor = Color.Green;
+            }
+
+            return (AmazonBrawlHardcoreGame.Attached || RRXXGame.Attached || SCGame.Attached);
         }
 
         public static StringBuilder Logs { get; set; } = new StringBuilder();
@@ -83,13 +129,13 @@ namespace RyonaVibration
 
         private async void btnReadMemory_Click(object sender, EventArgs e)
         {
-            if (!VibratorController.Client.Devices.Any())
-            {
-                MessageBox.Show("No sextoys paired yet.");
-#if DEBUG == false
-                return;
-#endif
-            }
+//            if (!VibratorController.Client.Devices.Any())
+//            {
+//                MessageBox.Show("No sextoys paired yet.");
+//#if DEBUG == false
+//                return;
+//#endif
+//            }
             if (!HasInitializedVibrator)
             {
                 VibratorController.NewLogsPublished -= Client_NewLogsPublished;
@@ -140,6 +186,7 @@ namespace RyonaVibration
             {
                 if (SCGame != null)
                 {
+                    SCGame.Attached = false;
                     SCGame.Dispose();
                 }
                 SCGame = new SCGame();
@@ -149,7 +196,17 @@ namespace RyonaVibration
                     SCGame.AttachListenersForPlayerNumber(VibratorController, PlayerNumber);
 
                     //DEBUG
-                    SCGame.Player1.ValueUpdated += Player1_ValueUpdated;
+                    if (rbLeft.Checked)
+                    {
+                        SCGame.Player1.ValueUpdated += Player1_ValueUpdated;
+                        SCGame.Player2.ValueUpdated -= Player1_ValueUpdated;
+                    }
+                    else
+                    {
+                        SCGame.Player1.ValueUpdated -= Player1_ValueUpdated;
+                        SCGame.Player2.ValueUpdated += Player1_ValueUpdated;
+                    }
+                    
 
                     await SCGame.StartListening(PlayerNumber, VibratorController);
                 }
@@ -165,6 +222,16 @@ namespace RyonaVibration
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             btnEmergency_Click(this, null);
+        }
+
+        private void rbRight_CheckedChanged(object sender, EventArgs e)
+        {
+            btnReadMemory_Click(sender, e);
+        }
+
+        private void rbLeft_CheckedChanged(object sender, EventArgs e)
+        {
+            btnReadMemory_Click(sender, e);
         }
     }
 }
