@@ -14,6 +14,11 @@ Compatible games:
 - Rumble Roses (Tested with Xenia canary)
 - Amazon Brawl
 
+Compatible toys (W.I.P):
+- Edge / Edge 2
+- Lush
+- Hush
+
 ## How to use
 
 - Download the latest release from here: https://github.com/AelithBlanchett/RyonaVibration/releases
