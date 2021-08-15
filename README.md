@@ -14,7 +14,7 @@ Compatible games:
 - Rumble Roses (Tested with Xenia canary)
 - Amazon Brawl
 
-Compatible toys (W.I.P):
+Compatible toys (Most vibrating Lovense toys should be):
 - Edge / Edge 2
 - Lush
 - Hush
